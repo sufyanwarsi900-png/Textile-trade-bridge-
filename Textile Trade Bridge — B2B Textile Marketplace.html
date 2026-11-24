@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Textile Trade Bridge — Global B2B Textile Marketplace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+          },
+          colors: {
+            brand: {
+              950: '#071120',
+              900: '#0d1b2a',
+              800: '#16293e',
+              700: '#1e3a5f',
+              600: '#0f766e',
+              500: '#0d9488',
+              400: '#2dd4bf',
+              gold: '#d97706',
+              goldLight: '#fbbf24'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .glass-nav {
+      background: rgba(13, 27, 42, 0.96);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Stats & Mode Bar -->
+  <div class="bg-brand-950 text-slate-200 border-b border-white/10 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <span class="inline-flex items-center gap-1.5 font-semibold text-amber-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          18,000+ Active Traders
+        </span>
+        <span class="text-slate-500">•</span>
+        <span class="font-semibold text-teal-300">133 Trade Countries</span>
+        <span class="text-slate-500">•</span>
+        <span id="topProfilesCountBadge" class="font-semibold text-white">48 Textile Profiles</span>
+        <span class="hidden md:inline text-slate-500">•</span>
+        <span class="hidden md:inline text-slate-300">
+          Submission: <strong class="text-white">$0.90</strong> | View Unlock: <strong class="text-amber-300">$2.99</strong>
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="headerModeBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-teal-500/20 text-teal-300 border border-teal-400/30">
+          Client Mode
+        </span>
+        <button id="toggleModeBtn" type="button" class="text-[11px] font-semibold text-amber-300 hover:text-amber-200 underline underline-offset-2 transition">
+          Admin Mode
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Sticky Navigation -->
+  <header class="glass-nav sticky top-0 z-40 border-b border-white/10 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <button id="brandHomeBtn" type="button" class="flex items-center gap-3 text-left group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-brand-950 flex items-center justify-center font-extrabold shadow-md group-hover:scale-105 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10M17 15l3 3-3 3" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-base sm:text-lg font-extrabold tracking-tight leading-none text-white">
+            Textile Trade Bridge
+          </div>
+          <div class="text-[11px] text-slate-300 mt-0.5">
+            Global B2B Textile Sourcing &amp; Trade Network
+          </div>
+        </div>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1.5 text-xs font-semibold">
+        <button data-nav="directory" type="button" class="nav-link px-3 py-2 rounded-lg text-slate-200 hover:bg-white/10 transition">
+          Directory
+        </button>
+        <button data-nav="submit" type="button" class="nav-link px-3 py-2 rounded-lg text-slate-200 hover:bg-white/10 transition">
+          Submit Profile ($0.90)
+        </button>
+        <button data-nav="payments" type="button" class="nav-link px-3 py-2 rounded-lg text-slate-200 hover:bg-white/10 transition">
+          Receiving Account
+        </button>
+        <button data-nav="notifications" type="button" class="nav-link px-3 py-2 rounded-lg text-slate-200 hover:bg-white/10 transition relative">
+          Notifications &amp; TIDs
+          <span id="pendingBadgeCount" class="ml-1 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold bg-amber-400 text-brand-950">0</span>
+        </button>
+        <button data-nav="invite" type="button" class="nav-link px-3 py-2 rounded-lg text-slate-200 hover:bg-white/10 transition">
+          Invite Traders
+        </button>
+        <button data-nav="admin" type="button" class="nav-link px-3 py-2 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/30 hover:bg-amber-500/30 transition">
+          Admin Mode
+        </button>
+      </nav>
+
+      <!-- Mobile Buttons -->
+      <div class="flex lg:hidden items-center gap-2">
+        <button data-nav="notifications" type="button" class="relative p-2 rounded-lg bg-white/10 text-amber-300" aria-label="Notifications">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span id="mobilePendingBadge" class="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-amber-400 text-brand-950 text-[10px] font-bold flex items-center justify-center">0</span>
+        </button>
+        <button id="mobileMenuBtn" type="button" class="p-2 rounded-lg bg-white/10 text-white" aria-label="Menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobileNavDrawer" class="hidden lg:hidden border-t border-white/10 bg-brand-900 px-4 py-3 space-y-1.5 text-sm font-medium">
+      <button data-nav="directory" type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-slate-100">
+        Directory &amp; Categories (48 Profiles)
+      </button>
+      <button data-nav="submit" type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-slate-100">
+        Submit Client Profile ($0.90)
+      </button>
+      <button data-nav="payments" type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-slate-100">
+        Active Receiving Account
+      </button>
+      <button data-nav="notifications" type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-slate-100">
+        Notifications &amp; TID Approvals
+      </button>
+      <button data-nav="invite" type="button" class="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 text-slate-100">
+        Invite Traders Link
+      </button>
+      <button data-nav="admin" type="button" class="w-full text-left px-3 py-2 rounded-lg bg-amber-500/20 text-amber-300 font-semibold">
+        Admin Mode Console
+      </button>
+    </div>
+  </header>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full px-4 sm:px-0 pointer-events-none"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- Sub-view Back Strip -->
+    <div id="globalSubViewBackBar" class="hidden items-center justify-between bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm">
+      <button id="globalBackBtn" type="button" class="inline-flex items-center gap-2 text-sm font-bold text-brand-900 hover:text-brand-600 transition">
+        <span class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">←</span>
+        <span>← Back</span>
+      </button>
+      <div id="subViewBreadcrumb" class="text-xs font-medium text-slate-500"></div>
+    </div>
+
+    <!-- Client Approval / Status Alert Strip -->
+    <div id="clientApprovalAlertBanner" class="hidden rounded-2xl bg-emerald-50 border border-emerald-300 px-4 py-3 shadow-xs flex flex-wrap items-center justify-between gap-3">
+      <div id="clientApprovalAlertText" class="text-xs sm:text-sm font-semibold text-emerald-950"></div>
+      <div class="flex items-center gap-2">
+        <button id="clientApprovalOpenBtn" type="button" class="px-3.5 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition">
+          Open Approved Item
+        </button>
+        <button id="clientApprovalViewNotifsBtn" type="button" class="px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold transition">
+          Notifications
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: HOME & B2B DIRECTORY (48 SCROLLABLE PROFILES)                -->
+    <!-- ===================================================================== -->
+    <section id="view-directory" class="app-view space-y-6">
+      <!-- Hero Banner & Core Stats -->
+      <div class="rounded-3xl bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 text-white p-6 sm:p-8 shadow-lg border border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-7 space-y-4">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-300/30 text-amber-300 text-xs font-bold">
+              <span>Textile Trade Bridge</span>
+              <span>•</span>
+              <span>18,000+ Active Traders</span>
+              <span>•</span>
+              <span>133 Trade Countries</span>
+              <span>•</span>
+              <span>48 Textile Profiles</span>
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              Global B2B Textile Sourcing Across <span class="text-amber-300">133 Countries</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Browse <strong>48 verified textile profiles</strong> across major sourcing hubs, submit a business profile for a <strong>$0.90</strong> fee, or unlock full trader contact details with a <strong>$2.99</strong> view approval (automatically re-locks when navigating back).
+            </p>
+            <div class="grid grid-cols-3 gap-3 pt-1 max-w-lg">
+              <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+                <div class="text-base sm:text-xl font-extrabold text-amber-300">18,000+</div>
+                <div class="text-[11px] text-slate-300">Active Traders</div>
+              </div>
+              <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+                <div class="text-base sm:text-xl font-extrabold text-teal-300">133</div>
+                <div class="text-[11px] text-slate-300">Trade Countries</div>
+              </div>
+              <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+                <div id="heroProfilesStat" class="text-base sm:text-xl font-extrabold text-white">48</div>
+                <div class="text-[11px] text-slate-300">Textile Profiles</div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3 pt-1">
+              <button id="heroSubmitBtn" type="button" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-brand-950 font-extrabold text-xs sm:text-sm shadow transition">
+                Submit Profile ($0.90)
+              </button>
+              <button id="heroPaymentsBtn" type="button" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/15 transition">
+                Receiving Account
+              </button>
+              <button id="heroInviteBtn" type="button" class="px-5 py-2.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 text-teal-200 font-bold text-xs sm:text-sm border border-teal-400/30 transition">
+                Invite Traders
+              </button>
+            </div>
+          </div>
+
+          <!-- Textile Category Visual Cards -->
+          <div class="lg:col-span-5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
+            <button type="button" onclick="quickSelectCategory('Yarn')" class="text-left rounded-2xl overflow-hidden border border-white/15 bg-brand-950/60 hover:border-amber-300/60 transition">
+              <img
+                src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?auto=format&fit=crop&w=600&q=80"
+                alt="Yarn & Polyester"
+                onerror="handleImageFallback(this, 'YARN & POLYESTER')"
+                class="h-24 w-full object-cover"
+              />
+              <div class="p-2.5 text-[11px] font-bold text-amber-300">Yarn • Polyester • Raw Material</div>
+            </button>
+            <button type="button" onclick="quickSelectCategory('Denim')" class="text-left rounded-2xl overflow-hidden border border-white/15 bg-brand-950/60 hover:border-teal-300/60 transition">
+              <img
+                src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80"
+                alt="Denim & Raw Fabric"
+                onerror="handleImageFallback(this, 'DENIM & RAW FABRIC')"
+                class="h-24 w-full object-cover"
+              />
+              <div class="p-2.5 text-[11px] font-bold text-teal-300">Denim • Raw Fabric • Fabric</div>
+            </button>
+            <button type="button" onclick="quickSelectCategory('Apparel')" class="text-left rounded-2xl overflow-hidden border border-white/15 bg-brand-950/60 hover:border-amber-300/60 transition">
+              <img
+                src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80"
+                alt="Apparel"
+                onerror="handleImageFallback(this, 'APPAREL')"
+                class="h-24 w-full object-cover"
+              />
+              <div class="p-2.5 text-[11px] font-bold text-slate-200">Apparel &amp; Garments</div>
+            </button>
+            <button type="button" onclick="quickSelectCategory('Home Textile')" class="text-left rounded-2xl overflow-hidden border border-white/15 bg-brand-950/60 hover:border-teal-300/60 transition">
+              <img
+                src="https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=600&q=80"
+                alt="Home Textile"
+                onerror="handleImageFallback(this, 'HOME TEXTILE')"
+                class="h-24 w-full object-cover"
+              />
+              <div class="p-2.5 text-[11px] font-bold text-slate-200">Home Textile &amp; Linen</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters: Trade Type, Country (133), Search & Categories -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+          <!-- Trade Type Filter -->
+          <div class="md:col-span-4 flex rounded-xl bg-slate-100 p-1 border border-slate-200">
+            <button data-scope="All" type="button" class="scope-btn flex-1 py-1.5 px-2.5 rounded-lg text-xs font-bold transition">
+              All Trade
+            </button>
+            <button data-scope="Local" type="button" class="scope-btn flex-1 py-1.5 px-2.5 rounded-lg text-xs font-bold transition">
+              Local
+            </button>
+            <button data-scope="International" type="button" class="scope-btn flex-1 py-1.5 px-2.5 rounded-lg text-xs font-bold transition">
+              International
+            </button>
+          </div>
+
+          <!-- 133 Countries Filter -->
+          <div class="md:col-span-4">
+            <label for="filterCountrySelect" class="sr-only">Filter by Country</label>
+            <select id="filterCountrySelect" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500">
+              <option value="All">All 133 Trade Countries</option>
+            </select>
+          </div>
+
+          <!-- Keyword Search -->
+          <div class="md:col-span-4 flex gap-2">
+            <label for="searchDirectoryInput" class="sr-only">Search traders</label>
+            <input
+              id="searchDirectoryInput"
+              type="text"
+              placeholder="Search mill, yarn, denim, country..."
+              class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
+            />
+            <button id="resetFiltersBtn" type="button" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold whitespace-nowrap transition">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Chips -->
+        <div id="categoryChipsContainer" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+
+        <!-- Summary Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
+          <div id="activeFilterSummary" class="font-semibold text-slate-700"></div>
+          <div id="resultsCountLabel"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable Directory Cards Grid -->
+      <div id="directoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+
+      <!-- Empty Filter State -->
+      <div id="emptyDirectoryState" class="hidden bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-3">
+        <div class="text-base font-extrabold text-brand-950">No Matching Textile Profiles Found</div>
+        <p class="text-xs text-slate-500 max-w-md mx-auto">
+          Try switching Trade Type, picking another country from the 133 countries list, or resetting filters.
+        </p>
+        <button id="emptyResetBtn" type="button" class="px-4 py-2 rounded-xl bg-brand-900 text-white text-xs font-bold">
+          Show All 48 Profiles
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: SUBMIT CLIENT PROFILE ($0.90)                                 -->
+    <!-- ===================================================================== -->
+    <section id="view-submit" class="app-view hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <button data-back="directory" type="button" class="back-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <div class="text-right">
+          <div class="text-sm font-extrabold text-brand-950">Submit B2B Textile Profile ($0.90 Fee)</div>
+          <div class="text-xs text-slate-500">Choose Trade Type, Country (133), and Category so traders can find you</div>
+        </div>
+      </div>
+
+      <form id="submitProfileForm" class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 max-w-4xl">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="subCompany" class="block text-xs font-bold text-slate-700 mb-1">Company / Mill Name *</label>
+            <input id="subCompany" name="company" type="text" required placeholder="e.g., Chenab Yarn & Denim Mills" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+          </div>
+          <div>
+            <label for="subContactName" class="block text-xs font-bold text-slate-700 mb-1">Contact Person *</label>
+            <input id="subContactName" name="contactName" type="text" required placeholder="Full name" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="subTradeScope" class="block text-xs font-bold text-slate-700 mb-1">Trade Type *</label>
+            <select id="subTradeScope" name="tradeScope" required class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold">
+              <option value="">Select Trade Type...</option>
+              <option value="Local">Local</option>
+              <option value="International">International</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="subCountry" class="block text-xs font-bold text-slate-700 mb-1">Country (133 List) *</label>
+            <select id="subCountry" name="country" required class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold">
+              <option value="">Select Country...</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="subCategory" class="block text-xs font-bold text-slate-700 mb-1">Textile Category *</label>
+            <select id="subCategory" name="category" required class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold">
+              <option value="">Select Category...</option>
+              <option value="Yarn">Yarn</option>
+              <option value="Polyester">Polyester</option>
+              <option value="Raw Material">Raw Material</option>
+              <option value="Raw Fabric">Raw Fabric</option>
+              <option value="Denim">Denim</option>
+              <option value="Apparel">Apparel</option>
+              <option value="Home Textile">Home Textile</option>
+              <option value="Fabric">Fabric</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="subRole" class="block text-xs font-bold text-slate-700 mb-1">Business Role *</label>
+            <select id="subRole" name="role" required class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm">
+              <option value="Mill / Manufacturer">Mill / Manufacturer</option>
+              <option value="Exporter">Exporter</option>
+              <option value="Global Buyer">Global Buyer</option>
+              <option value="Raw Material Supplier">Raw Material Supplier</option>
+            </select>
+          </div>
+          <div>
+            <label for="subLocation" class="block text-xs font-bold text-slate-700 mb-1">City / Industrial Hub *</label>
+            <input id="subLocation" name="location" type="text" required placeholder="e.g., Faisalabad / Bursa / Dhaka" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+          </div>
+          <div>
+            <label for="subMoq" class="block text-xs font-bold text-slate-700 mb-1">MOQ / Volume *</label>
+            <input id="subMoq" name="moq" type="text" required placeholder="e.g., MOQ: 15 MT or 20,000 Yds" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="subPhone" class="block text-xs font-bold text-slate-700 mb-1">Phone / WhatsApp *</label>
+            <input id="subPhone" name="phone" type="text" required placeholder="+92 300 0000000" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+          </div>
+          <div>
+            <label for="subEmail" class="block text-xs font-bold text-slate-700 mb-1">Business Email *</label>
+            <input id="subEmail" name="email" type="email" required placeholder="trade@company.com" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label for="subProducts" class="block text-xs font-bold text-slate-700 mb-1">Products &amp; Specifications *</label>
+          <input id="subProducts" name="products" type="text" required placeholder="e.g., Ne 30/1 Combed Cotton Yarn, 12oz Stretch Denim" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+        </div>
+
+        <div>
+          <label for="subDescription" class="block text-xs font-bold text-slate-700 mb-1">Trade Summary *</label>
+          <textarea id="subDescription" name="description" rows="3" required placeholder="Describe your production capacity, export markets, or sourcing needs..." class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm"></textarea>
+        </div>
+
+        <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100">
+          <div class="text-xs text-slate-600">
+            Submission Fee: <strong class="text-brand-950">$0.90</strong> to the active receiving account (TID verification required)
+          </div>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-brand-950 font-extrabold text-sm shadow transition">
+            Continue to $0.90 Payment &amp; TID →
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 3: PAYMENT & TRANSACTION ID (TID) FLOW (ACTIVE ACCOUNT ONLY)     -->
+    <!-- ===================================================================== -->
+    <section id="view-payment-proof" class="app-view hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <button id="paymentBackBtn" type="button" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <div class="text-right">
+          <div class="text-sm font-extrabold text-brand-950">Payment &amp; Transaction ID (TID) Verification</div>
+          <div class="text-xs text-slate-500">Transfer to the active receiving account below and submit your Transaction ID (TID)</div>
+        </div>
+      </div>
+
+      <!-- Target Payment Box: Direct Smooth Scroll Anchor -->
+      <div id="paymentActionSection" tabindex="-1" class="space-y-5 scroll-mt-24 focus:outline-none">
+        <!-- Payment Context Banner -->
+        <div class="rounded-2xl bg-brand-950 text-white p-5 flex flex-wrap items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div id="paymentPurposeTitle" class="text-base font-extrabold text-amber-300"></div>
+            <div id="paymentPurposeDesc" class="text-xs text-slate-300"></div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] uppercase text-slate-400 font-bold">Required Fee</div>
+            <div id="paymentAmountTag" class="text-2xl font-extrabold text-emerald-300">$0.90</div>
+          </div>
+        </div>
+
+        <!-- ONLY Active Receiving Account Selected by Admin -->
+        <div class="bg-white rounded-2xl border-2 border-amber-400 p-5 sm:p-6 shadow-sm space-y-3 max-w-3xl">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900">Active Receiving Account</span>
+              <h3 id="checkoutActiveAccountHeading" class="text-base font-extrabold text-brand-950 mt-1">Receiving Account Details</h3>
+            </div>
+            <span id="checkoutActiveAccountBadge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-brand-900 text-amber-300"></span>
+          </div>
+          <div id="checkoutActiveAccountDetails" class="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs space-y-1.5 text-slate-800"></div>
+        </div>
+
+        <!-- Transaction ID (TID) Submission Form (No Screenshot Upload) -->
+        <form id="proofSubmissionForm" class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 max-w-3xl">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-base font-extrabold text-brand-950">Submit Transaction ID (TID)</h3>
+            <span class="text-xs font-bold text-brand-700">Active Account: <strong id="selectedMethodLabel">Binance</strong></span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="proofSenderName" class="block text-xs font-bold text-slate-700 mb-1">Sender / Company Name *</label>
+              <input id="proofSenderName" type="text" required placeholder="Your name or company" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+            </div>
+            <div>
+              <label for="proofTxRef" class="block text-xs font-bold text-slate-700 mb-1">Transaction ID (TID) *</label>
+              <input id="proofTxRef" type="text" required placeholder="e.g., TID-9847261530" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm font-mono" />
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-500">
+            Complete the transfer to the active receiving account above, then enter your Transaction ID (TID) and click Submit TID. Your TID is saved so you can see approval status even if you go offline and return later.
+          </p>
+
+          <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-extrabold text-sm shadow transition">
+            Submit TID
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 4: ACTIVE RECEIVING ACCOUNT VIEW (READ-ONLY OUTSIDE ADMIN)      -->
+    <!-- ===================================================================== -->
+    <section id="view-payments" class="app-view hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <button data-back="directory" type="button" class="back-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <div class="text-right">
+          <div class="text-sm font-extrabold text-brand-950">Active Payment Receiving Account</div>
+          <div class="text-xs text-slate-500">Managed inside Admin Mode (Read-only on client view)</div>
+        </div>
+      </div>
+
+      <div id="publicReceivingAccountBox" class="bg-white rounded-2xl border border-amber-300 p-5 sm:p-6 shadow-sm space-y-3 max-w-3xl scroll-mt-24">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-xs font-extrabold uppercase text-amber-700">Active Receiving Account</span>
+          <span id="publicActiveMethodTag" class="px-3 py-1 rounded-full text-xs font-bold bg-brand-900 text-amber-300"></span>
+        </div>
+        <h2 id="publicActiveAccountTitle" class="text-lg font-extrabold text-brand-950">Receiving Account</h2>
+        <div id="activeAccountReadOnlyDisplay" class="rounded-xl bg-amber-50/50 border border-amber-200 p-4 text-xs space-y-1.5 text-slate-800"></div>
+        <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 text-xs">
+          <span class="text-slate-500">Account configuration &amp; switching are available inside Admin Mode.</span>
+          <button type="button" onclick="navigateTo('admin')" class="px-4 py-2 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold">
+            Open Admin Mode
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 5: NOTIFICATIONS & TID APPROVALS (CLIENT + ADMIN)                -->
+    <!-- ===================================================================== -->
+    <section id="view-notifications" class="app-view hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <button data-back="directory" type="button" class="back-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <div class="text-right">
+          <div class="text-sm font-extrabold text-brand-950">Notifications &amp; TID Approvals</div>
+          <div class="text-xs text-slate-500">Persisted approval &amp; decline notifications for clients and admin review</div>
+        </div>
+      </div>
+
+      <div id="notificationsList" class="space-y-4"></div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 6: INVITATION LINK & SHARE HUB                                   -->
+    <!-- ===================================================================== -->
+    <section id="view-invite" class="app-view hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <button data-back="directory" type="button" class="back-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <div class="text-right">
+          <div class="text-sm font-extrabold text-brand-950">Invite Textile Traders</div>
+          <div class="text-xs text-slate-500">Generate, copy, and share your Textile Trade Bridge invitation link</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 max-w-3xl">
+        <h2 class="text-lg font-extrabold text-brand-950">Invitation Link &amp; Referral Code</h2>
+        <p class="text-xs text-slate-500">
+          Share this invitation link with textile mills, exporters, raw material suppliers, and international buyers across 133 countries.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label for="inviteCodeInput" class="block text-xs font-bold text-slate-700 mb-1">Invite Code</label>
+            <input id="inviteCodeInput" type="text" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm font-bold" />
+          </div>
+          <div class="sm:col-span-2">
+            <label for="inviteLinkOutput" class="block text-xs font-bold text-slate-700 mb-1">Shareable Invite URL</label>
+            <div class="flex gap-2">
+              <input id="inviteLinkOutput" type="text" readonly class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2 text-xs font-mono" />
+              <button id="copyInviteBtn" type="button" class="px-4 py-2 rounded-xl bg-brand-900 hover:bg-brand-800 text-white text-xs font-bold whitespace-nowrap transition">
+                Copy Link
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
+          <div>Shared Count: <strong id="inviteShareCount" class="text-brand-950">0</strong></div>
+          <button id="logInviteShareBtn" type="button" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-brand-950 font-bold transition">
+            Log Invite Share
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 7: ADMIN MODE (NO PASSWORD HINT SHOWN)                           -->
+    <!-- ===================================================================== -->
+    <section id="view-admin" class="app-view hidden space-y-6">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <button data-back="directory" type="button" class="back-btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-sm font-extrabold text-brand-950">Admin Mode Console</div>
+            <div class="text-xs text-slate-500">Receiving accounts • Active account switch • TID Approvals • Password change</div>
+          </div>
+          <button id="adminLockBtn" type="button" class="hidden px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
+            Lock Admin
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Login Box (No Password Hint Displayed) -->
+      <div id="adminLoginBox" class="bg-white rounded-2xl border border-slate-200 p-6 max-w-md mx-auto shadow-sm space-y-4">
+        <div>
+          <h2 class="text-lg font-extrabold text-brand-950">Admin Mode Sign In</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Enter your administrator password to unlock Admin Mode.</p>
+        </div>
+
+        <form id="adminLoginForm" class="space-y-3">
+          <div>
+            <label for="adminPasswordInput" class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+            <input id="adminPasswordInput" type="password" required placeholder="Enter admin password" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm" />
+          </div>
+          <p id="adminLoginError" class="hidden text-xs font-semibold text-rose-600">Incorrect password. Please try again.</p>
+          <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-sm transition">
+            Enter Admin Mode
+          </button>
+        </form>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="adminDashboardBox" class="hidden space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white rounded-2xl border border-slate-200 p-4">
+            <div class="text-[11px] font-bold text-slate-500 uppercase">Total Directory Profiles</div>
+            <div id="adminTotalListings" class="text-2xl font-extrabold text-brand-950 mt-1">0</div>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-4">
+            <div class="text-[11px] font-bold text-slate-500 uppercase">Pending TID Requests</div>
+            <div id="adminPendingProofsCount" class="text-2xl font-extrabold text-amber-600 mt-1">0</div>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-4">
+            <div class="text-[11px] font-bold text-slate-500 uppercase">Approved TID Requests</div>
+            <div id="adminApprovedProofsCount" class="text-2xl font-extrabold text-emerald-600 mt-1">0</div>
+          </div>
+        </div>
+
+        <!-- Admin Notifications & TID Approvals Quick Panel -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-100 text-teal-900 mb-1">Notifications Queue</span>
+              <h3 class="text-base font-extrabold text-brand-950">Incoming Profile &amp; TID Requests (Approve / Decline)</h3>
+            </div>
+            <button type="button" onclick="navigateTo('notifications')" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold">
+              Full Notifications View →
+            </button>
+          </div>
+          <div id="adminInlineNotificationsList" class="space-y-3"></div>
+        </div>
+
+        <!-- Admin Exclusive Receiving Account Setup: Binance & Bank Account -->
+        <div class="bg-white rounded-2xl border border-amber-300 p-5 sm:p-6 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 mb-1">Admin Exclusive</span>
+              <h3 class="text-base font-extrabold text-brand-950">Receiving Account Setup &amp; Active Selection</h3>
+              <p class="text-xs text-slate-500">Configure Binance and Bank Account details and select which single account is Active for clients.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label for="adminActiveAccountSelect" class="text-xs font-bold text-slate-700">Active Account:</label>
+              <select id="adminActiveAccountSelect" class="rounded-xl border border-amber-400 bg-amber-50 px-3.5 py-2 text-xs font-extrabold text-brand-950">
+                <option value="Binance">Binance</option>
+                <option value="Bank Account">Bank Account</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <form id="binanceConfigForm" class="rounded-xl border border-amber-200 bg-amber-50/40 p-4 space-y-3">
+              <div class="text-xs font-extrabold text-amber-950 uppercase">Binance Receiving Setup</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="cfgBinancePayId" class="block text-[11px] font-bold text-slate-700 mb-1">Binance Pay ID / UID</label>
+                  <input id="cfgBinancePayId" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+                </div>
+                <div>
+                  <label for="cfgBinanceNetwork" class="block text-[11px] font-bold text-slate-700 mb-1">Network / Currency</label>
+                  <input id="cfgBinanceNetwork" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+                </div>
+              </div>
+              <div>
+                <label for="cfgBinanceWallet" class="block text-[11px] font-bold text-slate-700 mb-1">Wallet / Address</label>
+                <input id="cfgBinanceWallet" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+              </div>
+              <div>
+                <label for="cfgBinanceNote" class="block text-[11px] font-bold text-slate-700 mb-1">Payment Note</label>
+                <input id="cfgBinanceNote" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+              </div>
+              <button type="submit" class="w-full py-2 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-brand-950 font-bold text-xs transition">
+                Save Binance Account
+              </button>
+            </form>
+
+            <form id="bankConfigForm" class="rounded-xl border border-teal-200 bg-teal-50/40 p-4 space-y-3">
+              <div class="text-xs font-extrabold text-teal-950 uppercase">Bank Account Receiving Setup</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="cfgBankTitle" class="block text-[11px] font-bold text-slate-700 mb-1">Account Title</label>
+                  <input id="cfgBankTitle" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+                </div>
+                <div>
+                  <label for="cfgBankName" class="block text-[11px] font-bold text-slate-700 mb-1">Bank Name</label>
+                  <input id="cfgBankName" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="cfgBankAccountNum" class="block text-[11px] font-bold text-slate-700 mb-1">Account Number</label>
+                  <input id="cfgBankAccountNum" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+                </div>
+                <div>
+                  <label for="cfgBankIban" class="block text-[11px] font-bold text-slate-700 mb-1">IBAN / SWIFT</label>
+                  <input id="cfgBankIban" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+                </div>
+              </div>
+              <div>
+                <label for="cfgBankInstructions" class="block text-[11px] font-bold text-slate-700 mb-1">Bank Instructions</label>
+                <input id="cfgBankInstructions" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs" />
+              </div>
+              <button type="submit" class="w-full py-2 px-4 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-xs transition">
+                Save Bank Account
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Change Admin Password + Activity Log -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <form id="changeAdminPasswordForm" class="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+            <h3 class="text-sm font-extrabold text-brand-950">Change Admin Password</h3>
+            <div>
+              <label for="currentAdminPasswordInput" class="block text-[11px] font-bold text-slate-700 mb-1">Current Password *</label>
+              <input id="currentAdminPasswordInput" type="password" required placeholder="Current password" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="newAdminPasswordInput" class="block text-[11px] font-bold text-slate-700 mb-1">New Password *</label>
+                <input id="newAdminPasswordInput" type="password" required minlength="4" placeholder="New password" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+              </div>
+              <div>
+                <label for="confirmAdminPasswordInput" class="block text-[11px] font-bold text-slate-700 mb-1">Confirm Password *</label>
+                <input id="confirmAdminPasswordInput" type="password" required minlength="4" placeholder="Confirm password" class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-sm" />
+              </div>
+            </div>
+            <button type="submit" class="w-full py-2 px-4 rounded-xl bg-brand-900 hover:bg-brand-800 text-white text-xs font-bold transition">
+              Update Admin Password
+            </button>
+          </form>
+
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-brand-950">Activity Log</h3>
+              <button id="resetDemoDataBtn" type="button" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold">
+                Restore 48 Profiles
+              </button>
+            </div>
+            <div id="adminActivityLogList" class="divide-y divide-slate-100 max-h-52 overflow-y-auto text-xs"></div>
+          </div>
+        </div>
+
+        <!-- Free Admin Profile Inspection -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+          <h3 class="text-sm font-extrabold text-brand-950">All Textile Profiles (Free Admin Access)</h3>
+          <div id="adminListingsContainer" class="space-y-2.5 max-h-96 overflow-y-auto"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- PROFILE DETAIL & ONE-TIME $2.99 UNLOCK MODAL                          -->
+  <!-- ===================================================================== -->
+  <div id="profileDetailModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl border border-slate-200 max-w-2xl w-full p-5 sm:p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <button id="closeProfileModalBackBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition">
+          <span>← Back</span>
+        </button>
+        <span id="modalScopeCountryBadge" class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full"></span>
+      </div>
+      <div id="modalProfileBody" class="space-y-4"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-brand-950 text-slate-400 border-t border-white/10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+      <div>
+        <strong class="text-white">Textile Trade Bridge</strong> • 18,000+ Active Traders • 133 Trade Countries • 48 Textile Profiles
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <button data-nav="directory" type="button" class="hover:text-white transition">Directory</button>
+        <button data-nav="submit" type="button" class="hover:text-white transition">Submit ($0.90)</button>
+        <button data-nav="payments" type="button" class="hover:text-white transition">Receiving Account</button>
+        <button data-nav="notifications" type="button" class="hover:text-white transition">Notifications &amp; TIDs</button>
+        <button data-nav="invite" type="button" class="hover:text-white transition">Invite</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /**
+     * Application state & persistence configuration for Textile Trade Bridge.
+     * Persists listings, TID submissions, client approval notifications,
+     * active receiving account selection, and admin configuration in localStorage.
+     */
+    const STORAGE_KEY = 'TEXTILE_TRADE_BRIDGE_V3_STATE';
+    const SEED_PROFILE_COUNT = 48;
+
+    const CATEGORIES = [
+      'All',
+      'Yarn',
+      'Polyester',
+      'Raw Material',
+      'Raw Fabric',
+      'Denim',
+      'Apparel',
+      'Home Textile',
+      'Fabric'
+    ];
+
+    const TRADE_COUNTRIES_133 = [
+      'Pakistan', 'Turkey', 'China', 'India', 'Vietnam', 'Bangladesh',
+      'United Arab Emirates', 'Egypt', 'Italy', 'United States', 'United Kingdom',
+      'Germany', 'Spain', 'Japan', 'South Korea', 'Brazil', 'Sri Lanka',
+      'France', 'Canada', 'Mexico', 'Portugal', 'Morocco', 'Kenya', 'Indonesia',
+      'Thailand', 'Malaysia', 'Cambodia', 'Netherlands', 'Belgium', 'Poland',
+      'Sweden', 'Switzerland', 'Australia', 'New Zealand', 'Argentina', 'Chile',
+      'Colombia', 'Peru', 'Qatar', 'Kuwait', 'Oman', 'Bahrain', 'Jordan', 'Lebanon',
+      'Tunisia', 'Nigeria', 'South Africa', 'Ethiopia', 'Ghana', 'Tanzania', 'Uganda',
+      'Uzbekistan', 'Kazakhstan', 'Turkmenistan', 'Kyrgyzstan', 'Tajikistan', 'Azerbaijan',
+      'Georgia', 'Armenia', 'Ukraine', 'Romania', 'Bulgaria', 'Greece', 'Hungary',
+      'Czech Republic', 'Slovakia', 'Austria', 'Denmark', 'Norway', 'Finland', 'Ireland',
+      'Croatia', 'Serbia', 'Bosnia and Herzegovina', 'Slovenia', 'Estonia', 'Latvia',
+      'Lithuania', 'Cyprus', 'Malta', 'Luxembourg', 'Iceland', 'Philippines', 'Taiwan',
+      'Singapore', 'Myanmar', 'Nepal', 'Laos', 'Mongolia', 'Brunei', 'Maldives',
+      'Afghanistan', 'Iran', 'Iraq', 'Israel', 'Algeria', 'Sudan', 'Libya', 'Mauritania',
+      'Senegal', 'Ivory Coast', 'Cameroon', 'Angola', 'Mozambique', 'Zambia', 'Zimbabwe',
+      'Botswana', 'Namibia', 'Rwanda', 'Madagascar', 'Mauritius', 'Costa Rica', 'Panama',
+      'Guatemala', 'Honduras', 'El Salvador', 'Nicaragua', 'Dominican Republic', 'Jamaica',
+      'Trinidad and Tobago', 'Ecuador', 'Uruguay', 'Paraguay', 'Bolivia', 'Venezuela',
+      'Cuba', 'Bahamas', 'Barbados', 'Fiji', 'Papua New Guinea'
+    ];
+
+    const TEXTILE_IMAGES = {
+      Yarn: 'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?auto=format&fit=crop&w=700&q=80',
+      Polyester: 'https://images.unsplash.com/photo-1606760227091-3dd1c6d16e1c?auto=format&fit=crop&w=700&q=80',
+      'Raw Material': 'https://images.unsplash.com/photo-1594761051656-1539b7b97592?auto=format&fit=crop&w=700&q=80',
+      'Raw Fabric': 'https://images.unsplash.com/photo-1558171813-4c088753af8f?auto=format&fit=crop&w=700&q=80',
+      Denim: 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=700&q=80',
+      Apparel: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=700&q=80',
+      'Home Textile': 'https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=700&q=80',
+      Fabric: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=700&q=80'
+    };
+
+    const REALISTIC_TRADERS_48 = [
+      { company: 'Chenab Spintex & Mills', country: 'Pakistan', city: 'Faisalabad', category: 'Yarn', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 15 MT', products: 'Ne 20/1–40/1 Combed Ring & Compact Cotton Yarn', contact: 'Kamran Siddiqui', phone: '+92 301 5551001', email: 'exports@chenabspintex.example.com' },
+      { company: 'Bursa Indigo & Denim Co.', country: 'Turkey', city: 'Bursa', category: 'Denim', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 12,000 Yds', products: '11oz–14oz Selvedge, Stretch & Overdyed Denim', contact: 'Emre Kaya', phone: '+90 224 5551002', email: 'sales@bursaindigo.example.com' },
+      { company: 'Suzhou Filament & Polyester Corp.', country: 'China', city: 'Suzhou', category: 'Polyester', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 18 MT', products: 'FDY, POY & DTY Recycled Micro-Polyester Yarn', contact: 'Wei Zhang', phone: '+86 512 5551003', email: 'trade@suzhoufilament.example.com' },
+      { company: 'Tiruppur Knitwear & Apparel Guild', country: 'India', city: 'Tiruppur', category: 'Apparel', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 5,000 Pcs', products: 'Organic Jersey Tees, Hoodies & Activewear', contact: 'Karthik Nair', phone: '+91 421 5551004', email: 'orders@tiruppurknit.example.com' },
+      { company: 'Saigon Weave & Greige Textiles', country: 'Vietnam', city: 'Ho Chi Minh City', category: 'Raw Fabric', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 25,000 Yds', products: 'Unbleached Cotton Poplin, Twill & Canvas Greige', contact: 'Minh Nguyen', phone: '+84 28 5551005', email: 'info@saigonweave.example.com' },
+      { company: 'Dhaka Heritage Home Linen', country: 'Bangladesh', city: 'Gazipur', category: 'Home Textile', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 4,500 Sets', products: '300TC Percale Duvet Covers, Sheets & Terry Towels', contact: 'Farhana Rahman', phone: '+880 2 5551006', email: 'export@dhakahomelinen.example.com' },
+      { company: 'Al-Futtaim Textile Hub UAE', country: 'United Arab Emirates', city: 'Dubai', category: 'Fabric', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 30,000 Yds', products: 'Sourcing Printed Viscose, Linen & Shirting Fabrics', contact: 'Tariq Al-Mansoori', phone: '+971 4 5551007', email: 'sourcing@alftextile.example.com' },
+      { company: 'Nile Delta Long-Staple Spinning', country: 'Egypt', city: 'Alexandria', category: 'Yarn', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 10 MT', products: 'Extra-Long-Staple Giza Cotton Combed Yarn', contact: 'Mahmoud Hassan', phone: '+20 3 5551008', email: 'sales@niledeltaspin.example.com' },
+      { company: 'Biella Fine Cloth & Looms', country: 'Italy', city: 'Biella', category: 'Fabric', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 3,000 Mtrs', products: 'Worsted Wool Blends, Flannel & Tailoring Suiting', contact: 'Lorenzo Conti', phone: '+39 015 5551009', email: 'export@biellacloth.example.com' },
+      { company: 'Carolina Cotton & Fiber Supply', country: 'United States', city: 'Charlotte', category: 'Raw Material', tradeScope: 'International', role: 'Raw Material Supplier', moq: 'MOQ: 40 MT', products: 'Ginned Raw Cotton Bales, Viscose Staple & Lyocell', contact: 'Hannah Miller', phone: '+1 704 5551010', email: 'supply@carolinafiber.example.com' },
+      { company: 'Manchester Garment Sourcing Ltd.', country: 'United Kingdom', city: 'Manchester', category: 'Apparel', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 10,000 Pcs', products: 'Sourcing Knitwear, Outerwear & Workwear Garments', contact: 'Oliver Bennett', phone: '+44 161 5551011', email: 'buying@mcrgarments.example.com' },
+      { company: 'Rhein Technical & Raw Fabrics', country: 'Germany', city: 'Stuttgart', category: 'Raw Fabric', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 22,000 Mtrs', products: 'Technical Greige Substrates & Industrial Weaves', contact: 'Lukas Weber', phone: '+49 711 5551012', email: 'procurement@rheintextile.example.com' },
+      { company: 'Multan Ginning & Raw Fiber Co.', country: 'Pakistan', city: 'Multan', category: 'Raw Material', tradeScope: 'Local', role: 'Raw Material Supplier', moq: 'MOQ: 25 MT', products: 'Saw-Ginned Cotton Fiber, Sliver & Roving', contact: 'Bilal Qureshi', phone: '+92 61 5551013', email: 'bilal@multanginning.example.com' },
+      { company: 'Denizli Towel & Bath Weavers', country: 'Turkey', city: 'Denizli', category: 'Home Textile', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 6,000 Pcs', products: 'Zero-Twist Bath Sheets, Waffle Robes & Kitchen Linen', contact: 'Zeynep Demir', phone: '+90 258 5551014', email: 'zeynep@denizlitowel.example.com' },
+      { company: 'Shaoxing Dyeing & Woven Mills', country: 'China', city: 'Shaoxing', category: 'Fabric', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 15,000 Yds', products: 'Poly-Cotton Poplin, Satin, Chiffon & Jacquard', contact: 'Jing Li', phone: '+86 575 5551015', email: 'jing@shaoxingmills.example.com' },
+      { company: 'Surat Synthetic & Polyester Hub', country: 'India', city: 'Surat', category: 'Polyester', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 14 MT', products: 'Texturized Polyester Yarn & Micro-Filament Chips', contact: 'Dev Patel', phone: '+91 261 5551016', email: 'dev@suratsynthetic.example.com' },
+      { company: 'Hanoi Denim & Workwear Works', country: 'Vietnam', city: 'Hanoi', category: 'Denim', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 10,000 Yds', products: 'Ring-Slub Denim & Indigo Dyed Chambray', contact: 'Quang Tran', phone: '+84 24 5551017', email: 'quang@havoidenim.example.com' },
+      { company: 'Chittagong Spinning & Knit Mills', country: 'Bangladesh', city: 'Chattogram', category: 'Yarn', tradeScope: 'Local', role: 'Mill / Manufacturer', moq: 'MOQ: 12 MT', products: 'Carded & Combed Cotton Hosiery Yarn', contact: 'Nadia Islam', phone: '+880 31 5551018', email: 'nadia@ctgspinning.example.com' },
+      { company: 'Sharjah Apparel & Uniforms Co.', country: 'United Arab Emirates', city: 'Sharjah', category: 'Apparel', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 8,000 Pcs', products: 'Corporate Uniforms, Polo Shirts & Work Trousers', contact: 'Rashid Al-Suwaidi', phone: '+971 6 5551019', email: 'rashid@sharjahapparel.example.com' },
+      { company: 'Cairo Greige & Sheeting Mills', country: 'Egypt', city: '10th of Ramadan', category: 'Raw Fabric', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 18,000 Yds', products: 'Wide-Width Greige Sheeting & Percale Base Cloth', contact: 'Youssef Ibrahim', phone: '+20 55 5551020', email: 'youssef@cairogriege.example.com' },
+      { company: 'Como Silk & Luxury Fabric House', country: 'Italy', city: 'Como', category: 'Fabric', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 2,000 Mtrs', products: 'Silk Twill, Viscose Jacquard & Resort Prints', contact: 'Matteo Rossi', phone: '+39 031 5551021', email: 'matteo@comoluxury.example.com' },
+      { company: 'Los Angeles Denim & Cut-Sew', country: 'United States', city: 'Los Angeles', category: 'Denim', tradeScope: 'Local', role: 'Mill / Manufacturer', moq: 'MOQ: 4,000 Yds', products: 'Premium Domestic Denim & Wash-Ready Twills', contact: 'Chloe Anderson', phone: '+1 213 5551022', email: 'chloe@ladenimco.example.com' },
+      { company: 'Barcelona Home & Bedding Studio', country: 'Spain', city: 'Barcelona', category: 'Home Textile', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 7,500 Sets', products: 'Sourcing Washed Linen Bedding & Quilted Throws', contact: 'Mateo Navarro', phone: '+34 93 5551023', email: 'mateo@barcelonalinen.example.com' },
+      { company: 'Osaka Technical Yarn & Fiber', country: 'Japan', city: 'Osaka', category: 'Polyester', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 8 MT', products: 'Moisture-Wicking Polyester & Functional Yarns', contact: 'Kenji Sato', phone: '+81 6 5551024', email: 'kenji@osakafiber.example.com' },
+      { company: 'Daegu Synthetic & Knit Textiles', country: 'South Korea', city: 'Daegu', category: 'Fabric', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 10,000 Yds', products: 'Stretch Woven Nylon, Poly Spandex & Sportswear Cloth', contact: 'Ji-hoon Park', phone: '+82 53 5551025', email: 'jihoon@daegutextile.example.com' },
+      { company: 'Sao Paulo Cotton & Raw Supply', country: 'Brazil', city: 'Sao Paulo', category: 'Raw Material', tradeScope: 'International', role: 'Raw Material Supplier', moq: 'MOQ: 35 MT', products: 'Certified Bale Cotton & Recycled Textile Fibers', contact: 'Lucas Oliveira', phone: '+55 11 5551026', email: 'lucas@saopaulofiber.example.com' },
+      { company: 'Colombo Intimate & Knit Apparel', country: 'Sri Lanka', city: 'Colombo', category: 'Apparel', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 6,000 Pcs', products: 'Seamless Knits, Active Tops & Resort Wear', contact: 'Dilshan Perera', phone: '+94 11 5551027', email: 'dilshan@colomboknit.example.com' },
+      { company: 'Lyon Heritage Jacquard & Linen', country: 'France', city: 'Lyon', category: 'Home Textile', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 5,000 Sets', products: 'Sourcing Table Linen, Jacquard & Upholstery Cloth', contact: 'Camille Laurent', phone: '+33 4 5551028', email: 'camille@lyonlinen.example.com' },
+      { company: 'Porto Denim & Garment Mills', country: 'Portugal', city: 'Porto', category: 'Denim', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 8,500 Yds', products: 'Sustainable European Denim & Brushed Twill', contact: 'Tiago Ferreira', phone: '+351 22 5551029', email: 'tiago@portodenim.example.com' },
+      { company: 'Casablanca Knit & Raw Fabric Co.', country: 'Morocco', city: 'Casablanca', category: 'Raw Fabric', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 14,000 Yds', products: 'Cotton Interlock, Pique & Greige Knit Rolls', contact: 'Yassine El-Amrani', phone: '+212 522 5551030', email: 'yassine@casablancaknit.example.com' },
+      { company: 'Nairobi Export Apparel & Yarns', country: 'Kenya', city: 'Nairobi', category: 'Apparel', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 7,000 Pcs', products: 'Cotton Twill Trousers, Shirts & Work Apparel', contact: 'Grace Wanjiku', phone: '+254 20 5551031', email: 'grace@nairobigarment.example.com' },
+      { company: 'Bandung Rayon, Yarn & Weaving', country: 'Indonesia', city: 'Bandung', category: 'Yarn', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 16 MT', products: 'Viscose Spun Yarn, Rayon Blends & Core Yarn', contact: 'Budi Santoso', phone: '+62 22 5551032', email: 'budi@bandungyarn.example.com' },
+      { company: 'Bangkok Poly & Home Textile Mills', country: 'Thailand', city: 'Bangkok', category: 'Polyester', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 12 MT', products: 'Microfiber Polyester Filament & Textured Yarns', contact: 'Somchai Chai', phone: '+66 2 5551033', email: 'somchai@bangkokpoly.example.com' },
+      { company: 'Phnom Penh Export Garments', country: 'Cambodia', city: 'Phnom Penh', category: 'Apparel', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 9,000 Pcs', products: 'Woven Shirts, Jackets & Cotton Knitwear', contact: 'Dara Sok', phone: '+855 23 5551034', email: 'dara@phnompenhapparel.example.com' },
+      { company: 'Rotterdam Sourcing & Raw Material', country: 'Netherlands', city: 'Rotterdam', category: 'Raw Material', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 30 MT', products: 'Sourcing Recycled Fibers, Cotton & Pulp Blends', contact: 'Bram van Dijk', phone: '+31 10 5551035', email: 'bram@rotterdamsource.example.com' },
+      { company: 'Ghent Velvet, Home & Woven Co.', country: 'Belgium', city: 'Ghent', category: 'Home Textile', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 4,000 Mtrs', products: 'Woven Upholstery, Throws & Decorative Home Linen', contact: 'Pieter Peeters', phone: '+32 9 5551036', email: 'pieter@ghentwoven.example.com' },
+      { company: 'Lodz Knit & Raw Fabric Works', country: 'Poland', city: 'Lodz', category: 'Raw Fabric', tradeScope: 'Local', role: 'Mill / Manufacturer', moq: 'MOQ: 9,000 Mtrs', products: 'Undyed Cotton Knits, Ribbing & Fleece Greige', contact: 'Marek Kowalski', phone: '+48 42 5551037', email: 'marek@lodzknit.example.com' },
+      { company: 'Zurich Specialty Yarn & Textiles', country: 'Switzerland', city: 'Zurich', category: 'Yarn', tradeScope: 'International', role: 'Exporter', moq: 'MOQ: 6 MT', products: 'High-Twist Combed Yarns & Technical Blends', contact: 'Marc Keller', phone: '+41 44 5551038', email: 'marc@zurichyarn.example.com' },
+      { company: 'Melbourne Linen & Apparel Buyer', country: 'Australia', city: 'Melbourne', category: 'Apparel', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 5,500 Pcs', products: 'Sourcing Linen Dresses, Resort Knits & Basics', contact: 'Liam Thompson', phone: '+61 3 5551039', email: 'liam@melbourneapparel.example.com' },
+      { company: 'Tashkent Cotton & Yarn Export', country: 'Uzbekistan', city: 'Tashkent', category: 'Yarn', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 20 MT', products: 'Ring-Spun & Open-End Cotton Yarn', contact: 'Aziz Karimov', phone: '+998 71 5551040', email: 'aziz@tashkentyarn.example.com' },
+      { company: 'Riyadh Commercial Textile Trading', country: 'Saudi Arabia', city: 'Riyadh', category: 'Fabric', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 25,000 Yds', products: 'Sourcing White & Cream Shirting, Abaya & Suiting Cloth', contact: 'Faisal Al-Qahtani', phone: '+966 11 5551041', email: 'faisal@riyadhtextile.example.com' },
+      { company: 'Tunis Denim & Garment Hub', country: 'Tunisia', city: 'Tunis', category: 'Denim', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 7,500 Yds', products: 'Comfort Stretch Denim & Twill Fabrics', contact: 'Ines Trabelsi', phone: '+216 71 5551042', email: 'ines@tunisdenim.example.com' },
+      { company: 'Lagos Raw Cotton & Fiber Traders', country: 'Nigeria', city: 'Lagos', category: 'Raw Material', tradeScope: 'Local', role: 'Raw Material Supplier', moq: 'MOQ: 22 MT', products: 'West African Raw Cotton & Textile Fibers', contact: 'Chinedu Okafor', phone: '+234 1 5551043', email: 'chinedu@lagosfiber.example.com' },
+      { company: 'Cape Town Home & Linen Supply', country: 'South Africa', city: 'Cape Town', category: 'Home Textile', tradeScope: 'International', role: 'Global Buyer', moq: 'Order Volume: 4,200 Sets', products: 'Sourcing Hospitality Linen, Towels & Bedding', contact: 'Sipho Nkosi', phone: '+27 21 5551044', email: 'sipho@capelinen.example.com' },
+      { company: 'Addis Yarn, Fabric & Apparel Park', country: 'Ethiopia', city: 'Addis Ababa', category: 'Raw Fabric', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 15,000 Yds', products: 'Cotton Greige Fabric & Woven Base Cloth', contact: 'Dawit Bekele', phone: '+251 11 5551045', email: 'dawit@addisweave.example.com' },
+      { company: 'Taipei Polyester & Functional Cloth', country: 'Taiwan', city: 'Taipei', category: 'Polyester', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 11 MT', products: 'Recycled Polyester Filament & Performance Knits', contact: 'Mei-ling Chen', phone: '+886 2 5551046', email: 'meiling@taipeipoly.example.com' },
+      { company: 'Karachi Home & Terry Mills', country: 'Pakistan', city: 'Karachi', category: 'Home Textile', tradeScope: 'International', role: 'Mill / Manufacturer', moq: 'MOQ: 5,000 Sets', products: 'Luxury Bath Towels, Duvet Sets & Kitchen Linen', contact: 'Sana Farooq', phone: '+92 21 5551047', email: 'sana@karachihome.example.com' },
+      { company: 'Faisalabad Domestic Yarn & Weave', country: 'Pakistan', city: 'Faisalabad', category: 'Fabric', tradeScope: 'Local', role: 'Mill / Manufacturer', moq: 'MOQ: 8,000 Yds', products: 'Local Wholesale Cotton Lawn, Cambric & Poplin', contact: 'Usman Tariq', phone: '+92 41 5551048', email: 'usman@fsdweave.example.com' }
+    ];
+
+    function generateSeedProfiles() {
+      return REALISTIC_TRADERS_48.slice(0, SEED_PROFILE_COUNT).map((item, idx) => ({
+        id: `ttb-profile-${idx + 1}`,
+        company: item.company,
+        category: item.category,
+        tradeScope: item.tradeScope,
+        country: item.country,
+        role: item.role,
+        location: `${item.city}, ${item.country}`,
+        moq: item.moq,
+        products: item.products,
+        contactName: item.contact,
+        phone: item.phone,
+        email: item.email,
+        description: `Verified ${item.tradeScope.toLowerCase()} ${item.category.toLowerCase()} ${item.role.toLowerCase()} operating out of ${item.city}, ${item.country}.`,
+        status: 'approved',
+        image: TEXTILE_IMAGES[item.category] || TEXTILE_IMAGES.Fabric
+      }));
+    }
+
+    function getDefaultState() {
+      return {
+        adminPassword: 'admin123',
+        isAdminAuthenticated: false,
+        currentView: 'directory',
+        previousView: 'directory',
+        filters: {
+          scope: 'All',
+          category: 'All',
+          country: 'All',
+          search: ''
+        },
+        listings: generateSeedProfiles(),
+        oneTimeUnlockedIds: [],
+        activeModalListingId: null,
+        activeReceivingMethod: 'Binance',
+        pendingPaymentContext: {
+          type: 'listing_0_90',
+          amount: 0.9,
+          title: 'Client Profile Submission Fee ($0.90)',
+          description: 'Send $0.90 to the active receiving account and submit your Transaction ID (TID).',
+          payload: null
+        },
+        receivingAccounts: {
+          binance: {
+            payId: 'TTB-BINANCE-902145',
+            network: 'USDT (TRC20 / BEP20) & Binance Pay',
+            walletAddress: '0x88a19F34b7C2d1902E4F551290C11B8234a9012e',
+            instructions: 'Send exact fee amount and submit your Transaction ID (TID).'
+          },
+          bank: {
+            accountTitle: 'Textile Trade Bridge Ltd.',
+            bankName: 'Global Trade Bank',
+            accountNumber: '0192-884710-01',
+            iban: 'PK44GTB0000019288471001 / SWIFT: GTBKUS44',
+            instructions: 'Include sender name and submit your Transaction ID (TID).'
+          }
+        },
+        paymentProofs: [
+          {
+            id: 'prf-init-1',
+            type: 'listing_0_90',
+            amount: 0.9,
+            method: 'Binance',
+            senderName: 'Ravi Spinning & Weave',
+            txRef: 'TID-BNB-883920',
+            status: 'pending',
+            createdAt: 'Today, 09:40 AM',
+            clientSeen: true,
+            decisionMessage: '',
+            createdProfileId: null,
+            payload: {
+              company: 'Ravi Spinning & Weave',
+              category: 'Yarn',
+              tradeScope: 'International',
+              country: 'Pakistan',
+              role: 'Mill / Manufacturer',
+              location: 'Lahore, Pakistan',
+              moq: 'MOQ: 20 MT',
+              products: 'Ne 20/1 & 30/1 Ring Spun Yarn',
+              contactName: 'Tariq Mahmood',
+              phone: '+92 300 5550148',
+              email: 'sales@ravispinning.example.com',
+              description: 'Export-ready cotton and blended yarns.'
+            }
+          }
+        ],
+        invite: {
+          code: 'TTB-PARTNER-133',
+          sharesCount: 4
+        },
+        activityLog: [
+          {
+            id: 'act-1',
+            time: 'System',
+            text: 'Loaded 48 textile trade profiles across 133 countries (18,000+ active traders).'
+          }
+        ]
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return getDefaultState();
+        const parsed = JSON.parse(raw);
+        const def = getDefaultState();
+        return {
+          ...def,
+          ...parsed,
+          activeReceivingMethod: parsed.activeReceivingMethod === 'Bank Account' ? 'Bank Account' : 'Binance',
+          filters: { ...def.filters, ...(parsed.filters || {}) },
+          receivingAccounts: {
+            binance: { ...def.receivingAccounts.binance, ...(parsed.receivingAccounts?.binance || {}) },
+            bank: { ...def.receivingAccounts.bank, ...(parsed.receivingAccounts?.bank || {}) }
+          },
+          invite: { ...def.invite, ...(parsed.invite || {}) },
+          paymentProofs: Array.isArray(parsed.paymentProofs) ? parsed.paymentProofs : def.paymentProofs,
+          oneTimeUnlockedIds: [],
+          activeModalListingId: null
+        };
+      } catch (e) {
+        return getDefaultState();
+      }
+    }
+
+    let appState = loadState();
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        showToast('Could not save data to browser storage.', 'warn');
+      }
+    }
+
+    /**
+     * Smoothly scrolls to a target element so payment boxes, Binance ID / Bank IBAN,
+     * and TID inputs come directly into view without jumping to page top.
+     */
+    function scrollDirectlyToElement(elementId, focusTarget = false) {
+      const target = document.getElementById(elementId);
+      if (!target) return;
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (focusTarget && typeof target.focus === 'function') {
+          try {
+            target.focus({ preventScroll: true });
+          } catch (e) {
+            target.focus();
+          }
+        }
+      });
+    }
+
+    function logActivity(text) {
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      appState.activityLog.unshift({
+        id: `act-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        time,
+        text
+      });
+      appState.activityLog = appState.activityLog.slice(0, 25);
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function handleImageFallback(imgEl, labelText) {
+      if (!imgEl || imgEl.dataset.fallbackDone) return;
+      imgEl.dataset.fallbackDone = 'true';
+      const svg = encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+          <rect width="600" height="400" fill="#0d1b2a"/>
+          <rect x="20" y="20" width="560" height="360" rx="16" fill="none" stroke="#f59e0b" stroke-opacity="0.5" stroke-width="2"/>
+          <text x="300" y="190" text-anchor="middle" fill="#fbbf24" font-family="Inter, sans-serif" font-size="24" font-weight="800">${labelText || 'TEXTILE TRADE BRIDGE'}</text>
+          <text x="300" y="226" text-anchor="middle" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="13">18,000+ Traders • 133 Countries</text>
+        </svg>`
+      );
+      imgEl.src = `data:image/svg+xml,${svg}`;
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const styles = {
+        info: 'bg-brand-950 text-white border-brand-700',
+        success: 'bg-emerald-900 text-white border-emerald-500',
+        warn: 'bg-amber-950 text-amber-100 border-amber-500',
+        error: 'bg-rose-950 text-white border-rose-500'
+      };
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto rounded-xl border px-4 py-3 text-xs font-semibold shadow-lg transition ${styles[type] || styles.info}`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 220);
+      }, 3400);
+    }
+
+    function quickSelectCategory(categoryName) {
+      appState.filters.category = categoryName;
+      renderCategoryChips();
+      renderDirectory();
+      scrollDirectlyToElement('directoryGrid', false);
+    }
+
+    function populateCountrySelects() {
+      const filterSelect = document.getElementById('filterCountrySelect');
+      const subSelect = document.getElementById('subCountry');
+      filterSelect.innerHTML = '<option value="All">All 133 Trade Countries</option>';
+      subSelect.innerHTML = '<option value="">Select Country (133)...</option>';
+
+      TRADE_COUNTRIES_133.forEach((country) => {
+        const o1 = document.createElement('option');
+        o1.value = country;
+        o1.textContent = country;
+        filterSelect.appendChild(o1);
+
+        const o2 = document.createElement('option');
+        o2.value = country;
+        o2.textContent = country;
+        subSelect.appendChild(o2);
+      });
+    }
+
+    function renderCategoryChips() {
+      const wrap = document.getElementById('categoryChipsContainer');
+      wrap.innerHTML = '';
+      CATEGORIES.forEach((cat) => {
+        const active = appState.filters.category === cat;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = cat === 'All' ? 'All Categories' : cat;
+        btn.className = active
+          ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-500 text-brand-950 whitespace-nowrap transition'
+          : 'px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 whitespace-nowrap transition';
+        btn.addEventListener('click', () => {
+          appState.filters.category = cat;
+          renderCategoryChips();
+          renderDirectory();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    function syncScopeUI() {
+      document.querySelectorAll('.scope-btn').forEach((btn) => {
+        const selected = btn.dataset.scope === appState.filters.scope;
+        btn.className = selected
+          ? 'scope-btn flex-1 py-1.5 px-2.5 rounded-lg text-xs font-bold bg-brand-900 text-white shadow-xs transition'
+          : 'scope-btn flex-1 py-1.5 px-2.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+      });
+    }
+
+    function getMatchingListings() {
+      const { scope, category, country, search } = appState.filters;
+      const term = search.trim().toLowerCase();
+
+      return appState.listings.filter((item) => {
+        if (item.status !== 'approved') return false;
+        if (scope !== 'All' && item.tradeScope !== scope) return false;
+        if (category !== 'All' && item.category !== category) return false;
+        if (country !== 'All' && item.country !== country) return false;
+        if (term) {
+          const text = `${item.company} ${item.category} ${item.country} ${item.location} ${item.role} ${item.products} ${item.description}`.toLowerCase();
+          if (!text.includes(term)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderDirectory() {
+      syncScopeUI();
+      document.getElementById('filterCountrySelect').value = appState.filters.country;
+      document.getElementById('searchDirectoryInput').value = appState.filters.search;
+
+      const totalCount = appState.listings.length;
+      document.getElementById('topProfilesCountBadge').textContent = `${totalCount} Textile Profiles`;
+      document.getElementById('heroProfilesStat').textContent = String(totalCount);
+
+      const matches = getMatchingListings();
+      const grid = document.getElementById('directoryGrid');
+      const emptyBox = document.getElementById('emptyDirectoryState');
+
+      grid.innerHTML = '';
+
+      if (matches.length === 0) {
+        grid.classList.add('hidden');
+        emptyBox.classList.remove('hidden');
+      } else {
+        grid.classList.remove('hidden');
+        emptyBox.classList.add('hidden');
+
+        matches.forEach((item) => {
+          const isUnlocked = appState.isAdminAuthenticated || appState.oneTimeUnlockedIds.includes(item.id);
+          const hasPendingUnlockTid = appState.paymentProofs.some(
+            (p) => p.type === 'unlock_2_99' && p.status === 'pending' && p.payload?.targetListingId === item.id
+          );
+          const hasApprovedUnlockTid = appState.paymentProofs.some(
+            (p) => p.type === 'unlock_2_99' && p.status === 'approved' && p.payload?.targetListingId === item.id
+          );
+          const imgSrc = item.image || TEXTILE_IMAGES[item.category] || TEXTILE_IMAGES.Fabric;
+
+          const card = document.createElement('article');
+          card.className = 'bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition flex flex-col justify-between';
+          card.innerHTML = `
+            <div>
+              <div class="relative h-40 bg-slate-100 overflow-hidden">
+                <img
+                  src="${imgSrc}"
+                  alt="${escapeHtml(item.company)}"
+                  onerror="handleImageFallback(this, '${escapeHtml(item.category.toUpperCase())}')"
+                  class="w-full h-full object-cover"
+                />
+                <div class="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-brand-950/85 text-amber-300">
+                    ${escapeHtml(item.category)}
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${item.tradeScope === 'International' ? 'bg-teal-600 text-white' : 'bg-slate-800 text-slate-100'}">
+                    ${escapeHtml(item.tradeScope)}
+                  </span>
+                </div>
+                <div class="absolute bottom-2 right-2 px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-white/95 text-slate-900">
+                  ${escapeHtml(item.country)}
+                </div>
+              </div>
+              <div class="p-4 space-y-2">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-sm font-extrabold text-brand-950 leading-snug">${escapeHtml(item.company)}</h3>
+                  <span class="text-[10px] font-semibold text-slate-500 whitespace-nowrap">${escapeHtml(item.role)}</span>
+                </div>
+                <p class="text-xs text-slate-600 line-clamp-2">${escapeHtml(item.products)}</p>
+                <div class="text-[11px] text-slate-500 flex items-center justify-between pt-1">
+                  <span>${escapeHtml(item.location)}</span>
+                  <span class="font-semibold text-slate-700">${escapeHtml(item.moq)}</span>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <span class="text-[11px] font-bold ${
+                isUnlocked ? 'text-emerald-700' : (hasApprovedUnlockTid ? 'text-emerald-700' : (hasPendingUnlockTid ? 'text-teal-700' : 'text-amber-700'))
+              }">
+                ${
+                  appState.isAdminAuthenticated
+                    ? 'Admin Free View'
+                    : (isUnlocked ? 'Session Unlocked' : (hasApprovedUnlockTid ? 'Approved — Click to View' : (hasPendingUnlockTid ? 'TID Pending Verification' : 'Unlock: $2.99')))
+                }
+              </span>
+              <button
+                type="button"
+                onclick="openProfileModal('${item.id}')"
+                class="px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+                  (isUnlocked || hasApprovedUnlockTid)
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                    : 'bg-brand-900 hover:bg-brand-800 text-white'
+                }"
+              >
+                ${(isUnlocked || hasApprovedUnlockTid) ? 'View Info' : 'Unlock ($2.99)'}
+              </button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      document.getElementById('activeFilterSummary').textContent =
+        `${appState.filters.scope} • ${appState.filters.category} • ${appState.filters.country}`;
+      document.getElementById('resultsCountLabel').textContent =
+        `Showing ${matches.length} of ${totalCount} profiles`;
+    }
+
+    function openProfileModal(listingId) {
+      const listing = appState.listings.find((l) => l.id === listingId);
+      if (!listing) return;
+
+      const hasApprovedUnlockProof = appState.paymentProofs.some(
+        (p) => p.type === 'unlock_2_99' && p.status === 'approved' && p.payload?.targetListingId === listingId
+      );
+
+      if (hasApprovedUnlockProof && !appState.oneTimeUnlockedIds.includes(listingId)) {
+        appState.oneTimeUnlockedIds.push(listingId);
+      }
+
+      appState.activeModalListingId = listingId;
+      const isUnlocked = appState.isAdminAuthenticated || appState.oneTimeUnlockedIds.includes(listingId);
+      const pendingUnlock = appState.paymentProofs.find(
+        (p) => p.type === 'unlock_2_99' && p.status === 'pending' && p.payload?.targetListingId === listingId
+      );
+
+      const modal = document.getElementById('profileDetailModal');
+      const badge = document.getElementById('modalScopeCountryBadge');
+      const body = document.getElementById('modalProfileBody');
+      const imgSrc = listing.image || TEXTILE_IMAGES[listing.category] || TEXTILE_IMAGES.Fabric;
+
+      badge.textContent = `${listing.tradeScope} • ${listing.country} • ${listing.category}`;
+
+      if (isUnlocked) {
+        body.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
+            <img
+              src="${imgSrc}"
+              alt="${escapeHtml(listing.company)}"
+              onerror="handleImageFallback(this, '${escapeHtml(listing.category.toUpperCase())}')"
+              class="sm:col-span-5 h-44 w-full object-cover rounded-xl border border-slate-200"
+            />
+            <div class="sm:col-span-7 space-y-2">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">
+                ${appState.isAdminAuthenticated ? 'Admin Mode (Free Access)' : 'Approved View Active (Re-locks on ← Back)'}
+              </span>
+              <h3 class="text-xl font-extrabold text-brand-950">${escapeHtml(listing.company)}</h3>
+              <div class="text-xs font-semibold text-slate-600">${escapeHtml(listing.role)} • ${escapeHtml(listing.location)}</div>
+              <div class="text-xs font-bold text-brand-700">${escapeHtml(listing.moq)}</div>
+            </div>
+          </div>
+          <div class="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-2 text-xs">
+            <div class="font-bold text-slate-900">Products &amp; Specifications</div>
+            <p class="text-slate-700">${escapeHtml(listing.products)}</p>
+            <div class="font-bold text-slate-900 pt-1">Trade Overview</div>
+            <p class="text-slate-600">${escapeHtml(listing.description)}</p>
+          </div>
+          <div class="rounded-xl bg-emerald-50 border border-emerald-200 p-4 space-y-1 text-xs">
+            <div class="font-extrabold text-emerald-950 text-sm">Full Contact Details</div>
+            <div><strong>Contact Person:</strong> ${escapeHtml(listing.contactName)}</div>
+            <div><strong>Phone / WhatsApp:</strong> ${escapeHtml(listing.phone)}</div>
+            <div><strong>Business Email:</strong> ${escapeHtml(listing.email)}</div>
+          </div>
+        `;
+      } else {
+        body.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
+            <img
+              src="${imgSrc}"
+              alt="${escapeHtml(listing.company)}"
+              onerror="handleImageFallback(this, '${escapeHtml(listing.category.toUpperCase())}')"
+              class="sm:col-span-5 h-40 w-full object-cover rounded-xl border border-slate-200"
+            />
+            <div class="sm:col-span-7 space-y-2">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-900">
+                $2.99 View Unlock Required
+              </span>
+              <h3 class="text-xl font-extrabold text-brand-950">${escapeHtml(listing.company)}</h3>
+              <div class="text-xs font-semibold text-slate-600">${escapeHtml(listing.role)} • ${escapeHtml(listing.location)}</div>
+              <div class="text-xs font-bold text-slate-800">${escapeHtml(listing.moq)}</div>
+              <p class="text-xs text-slate-600">${escapeHtml(listing.products)}</p>
+            </div>
+          </div>
+          ${
+            pendingUnlock
+              ? `<div class="rounded-xl bg-teal-50 border border-teal-200 p-4 space-y-1.5 text-xs">
+                   <div class="font-extrabold text-teal-950">TID Submitted — Pending Admin Verification</div>
+                   <p class="text-teal-900">
+                     Transaction ID <strong>${escapeHtml(pendingUnlock.txRef)}</strong> (${escapeHtml(pendingUnlock.method)}) is awaiting admin approval. Once approved, a notification will appear for you even if you return later.
+                   </p>
+                 </div>`
+              : `<div class="rounded-xl bg-amber-50 border border-amber-200 p-4 space-y-2 text-xs">
+                   <div class="font-extrabold text-amber-950">Contact Details Locked</div>
+                   <p class="text-amber-900 leading-relaxed">
+                     Pay <strong>$2.99</strong> to the active receiving account and submit your <strong>Transaction ID (TID)</strong>. Clicking below takes you straight to the payment box.
+                   </p>
+                   <div class="pt-2">
+                     <button
+                       type="button"
+                       onclick="beginUnlockPayment('${listing.id}')"
+                       class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-brand-950 font-extrabold text-xs shadow transition"
+                     >
+                       Unlock Details ($2.99) →
+                     </button>
+                   </div>
+                 </div>`
+          }
+        `;
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeProfileModal() {
+      const id = appState.activeModalListingId;
+      if (id && !appState.isAdminAuthenticated) {
+        appState.oneTimeUnlockedIds = appState.oneTimeUnlockedIds.filter((x) => x !== id);
+      }
+      appState.activeModalListingId = null;
+      const modal = document.getElementById('profileDetailModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      renderDirectory();
+    }
+
+    function beginUnlockPayment(listingId) {
+      const listing = appState.listings.find((l) => l.id === listingId);
+      if (!listing) return;
+
+      appState.activeModalListingId = null;
+      const modal = document.getElementById('profileDetailModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+
+      appState.pendingPaymentContext = {
+        type: 'unlock_2_99',
+        amount: 2.99,
+        title: `Profile View Unlock ($2.99) — ${listing.company}`,
+        description: `Transfer $2.99 to the active receiving account and submit your Transaction ID (TID) to unlock ${listing.company} (${listing.country}).`,
+        payload: {
+          targetListingId: listing.id,
+          targetCompany: listing.company,
+          targetCountry: listing.country
+        }
+      };
+
+      navigateTo('payment-proof', { scrollTargetId: 'paymentActionSection', focusElement: true });
+    }
+
+    function getActiveAccountDetailsHtml() {
+      const method = appState.activeReceivingMethod;
+      const { binance, bank } = appState.receivingAccounts;
+      if (method === 'Bank Account') {
+        return `
+          <div><strong>Account Title:</strong> <span class="font-bold">${escapeHtml(bank.accountTitle)}</span></div>
+          <div><strong>Bank Name:</strong> ${escapeHtml(bank.bankName)}</div>
+          <div><strong>Account Number:</strong> <span class="font-mono font-bold">${escapeHtml(bank.accountNumber)}</span></div>
+          <div><strong>IBAN / SWIFT:</strong> <span class="font-mono">${escapeHtml(bank.iban)}</span></div>
+          <div class="text-slate-600">${escapeHtml(bank.instructions)}</div>
+        `;
+      }
+      return `
+        <div><strong>Binance Pay ID / UID:</strong> <span class="font-mono font-bold">${escapeHtml(binance.payId)}</span></div>
+        <div><strong>Network / Currency:</strong> ${escapeHtml(binance.network)}</div>
+        <div><strong>Wallet / Address:</strong> <span class="font-mono break-all">${escapeHtml(binance.walletAddress)}</span></div>
+        <div class="text-slate-600">${escapeHtml(binance.instructions)}</div>
+      `;
+    }
+
+    function renderReceivingAccountViews() {
+      const method = appState.activeReceivingMethod;
+      const { binance, bank } = appState.receivingAccounts;
+      const html = getActiveAccountDetailsHtml();
+
+      document.getElementById('publicActiveMethodTag').textContent = method;
+      document.getElementById('publicActiveAccountTitle').textContent =
+        method === 'Bank Account' ? 'Bank Receiving Account' : 'Binance Receiving Account';
+      document.getElementById('activeAccountReadOnlyDisplay').innerHTML = html;
+
+      document.getElementById('checkoutActiveAccountHeading').textContent =
+        method === 'Bank Account' ? 'Bank Account Details' : 'Binance Account Details';
+      document.getElementById('checkoutActiveAccountBadge').textContent = method;
+      document.getElementById('checkoutActiveAccountDetails').innerHTML = html;
+      document.getElementById('selectedMethodLabel').textContent = method;
+
+      const activeSelect = document.getElementById('adminActiveAccountSelect');
+      if (activeSelect) activeSelect.value = method;
+
+      document.getElementById('cfgBinancePayId').value = binance.payId;
+      document.getElementById('cfgBinanceNetwork').value = binance.network;
+      document.getElementById('cfgBinanceWallet').value = binance.walletAddress;
+      document.getElementById('cfgBinanceNote').value = binance.instructions;
+
+      document.getElementById('cfgBankTitle').value = bank.accountTitle;
+      document.getElementById('cfgBankName').value = bank.bankName;
+      document.getElementById('cfgBankAccountNum').value = bank.accountNumber;
+      document.getElementById('cfgBankIban').value = bank.iban;
+      document.getElementById('cfgBankInstructions').value = bank.instructions;
+    }
+
+    function renderPaymentProofScreen() {
+      const ctx = appState.pendingPaymentContext || {
+        type: 'listing_0_90',
+        amount: 0.9,
+        title: 'Client Profile Submission Fee ($0.90)',
+        description: 'Send $0.90 to the active receiving account and submit your Transaction ID (TID).',
+        payload: null
+      };
+      document.getElementById('paymentPurposeTitle').textContent = ctx.title;
+      document.getElementById('paymentPurposeDesc').textContent = ctx.description;
+      document.getElementById('paymentAmountTag').textContent = `$${Number(ctx.amount).toFixed(2)}`;
+      renderReceivingAccountViews();
+    }
+
+    /**
+     * Renders persistent client approval/decline alert banner so even if the client
+     * went offline while the admin was busy, returning to the app surfaces the approval
+     * and lets them open their unlocked profile or filtered listing immediately.
+     */
+    function renderClientApprovalBanner() {
+      const banner = document.getElementById('clientApprovalAlertBanner');
+      const textEl = document.getElementById('clientApprovalAlertText');
+      const openBtn = document.getElementById('clientApprovalOpenBtn');
+
+      const latestDecision = appState.paymentProofs.find(
+        (p) => (p.status === 'approved' || p.status === 'declined') && p.clientSeen === false
+      );
+
+      if (!latestDecision) {
+        banner.classList.add('hidden');
+        return;
+      }
+
+      banner.classList.remove('hidden');
+
+      if (latestDecision.status === 'approved') {
+        const label =
+          latestDecision.type === 'unlock_2_99'
+            ? `Approved! Your $2.99 TID (${latestDecision.txRef}) for "${latestDecision.payload?.targetCompany || 'profile'}" is approved — view details now.`
+            : `Approved! Your $0.90 TID (${latestDecision.txRef}) for profile "${latestDecision.payload?.company || latestDecision.senderName}" is approved and live in the directory.`;
+        textEl.textContent = label;
+        openBtn.classList.remove('hidden');
+        openBtn.onclick = () => {
+          latestDecision.clientSeen = true;
+          saveState();
+          renderClientApprovalBanner();
+          if (latestDecision.type === 'unlock_2_99' && latestDecision.payload?.targetListingId) {
+            const targetId = latestDecision.payload.targetListingId;
+            if (!appState.oneTimeUnlockedIds.includes(targetId)) {
+              appState.oneTimeUnlockedIds.push(targetId);
+            }
+            navigateTo('directory');
+            openProfileModal(targetId);
+          } else {
+            const created =
+              appState.listings.find((l) => l.id === latestDecision.createdProfileId) ||
+              appState.listings.find((l) => l.company === latestDecision.payload?.company);
+            navigateTo('directory');
+            if (created) {
+              openProfileModal(created.id);
+            }
+          }
+        };
+      } else {
+        textEl.textContent = `TID ${latestDecision.txRef} (${latestDecision.senderName}) was declined by Admin. Check Notifications for details.`;
+        openBtn.classList.add('hidden');
+      }
+    }
+
+    function approveProofItem(proofId) {
+      if (!appState.isAdminAuthenticated) {
+        showToast('Please sign in to Admin Mode to approve requests.', 'warn');
+        navigateTo('admin');
+        return;
+      }
+      const proof = appState.paymentProofs.find((p) => p.id === proofId);
+      if (!proof) return;
+
+      proof.status = 'approved';
+      proof.clientSeen = false;
+
+      if (proof.type === 'listing_0_90' && proof.payload) {
+        const newProfileId = `ttb-user-${Date.now()}`;
+        appState.listings.unshift({
+          id: newProfileId,
+          ...proof.payload,
+          status: 'approved',
+          image: TEXTILE_IMAGES[proof.payload.category] || TEXTILE_IMAGES.Fabric
+        });
+        proof.createdProfileId = newProfileId;
+        proof.decisionMessage = `Approved! Profile "${proof.payload.company}" is published and ready to view.`;
+        logActivity(`Approved $0.90 profile TID (${proof.txRef}) for "${proof.payload.company}" (${proof.method}).`);
+        showToast(`Approved! "${proof.payload.company}" is published; client notification queued.`, 'success');
+      } else if (proof.type === 'unlock_2_99' && proof.payload?.targetListingId) {
+        const tid = proof.payload.targetListingId;
+        if (!appState.oneTimeUnlockedIds.includes(tid)) {
+          appState.oneTimeUnlockedIds.push(tid);
+        }
+        proof.decisionMessage = `Approved! You can now view full contact details for "${proof.payload.targetCompany}".`;
+        logActivity(`Approved $2.99 unlock TID (${proof.txRef}) for "${proof.payload.targetCompany}" (${proof.method}).`);
+        showToast(`Approved! Access granted for ${proof.payload.targetCompany}; client notification queued.`, 'success');
+      } else {
+        proof.decisionMessage = `Approved TID ${proof.txRef}.`;
+        logActivity(`Approved payment TID ${proof.txRef}.`);
+        showToast('TID approved.', 'success');
+      }
+
+      saveState();
+      renderAll();
+    }
+
+    function declineProofItem(proofId) {
+      if (!appState.isAdminAuthenticated) {
+        showToast('Please sign in to Admin Mode to decline requests.', 'warn');
+        navigateTo('admin');
+        return;
+      }
+      const proof = appState.paymentProofs.find((p) => p.id === proofId);
+      if (!proof) return;
+
+      proof.status = 'declined';
+      proof.clientSeen = false;
+      proof.decisionMessage = `Declined TID ${proof.txRef}. Please verify the Transaction ID and resubmit if needed.`;
+      logActivity(`Declined payment TID ${proof.txRef} from "${proof.senderName}".`);
+      saveState();
+      showToast('TID request declined; client notification queued.', 'warn');
+      renderAll();
+    }
+
+    function openApprovedProofTarget(proofId) {
+      const proof = appState.paymentProofs.find((p) => p.id === proofId);
+      if (!proof || proof.status !== 'approved') return;
+      proof.clientSeen = true;
+      saveState();
+      renderClientApprovalBanner();
+
+      if (proof.type === 'unlock_2_99' && proof.payload?.targetListingId) {
+        const targetId = proof.payload.targetListingId;
+        if (!appState.oneTimeUnlockedIds.includes(targetId)) {
+          appState.oneTimeUnlockedIds.push(targetId);
+        }
+        navigateTo('directory');
+        openProfileModal(targetId);
+      } else if (proof.type === 'listing_0_90') {
+        const created =
+          appState.listings.find((l) => l.id === proof.createdProfileId) ||
+          appState.listings.find((l) => l.company === proof.payload?.company);
+        navigateTo('directory');
+        if (created) {
+          openProfileModal(created.id);
+        }
+      }
+    }
+
+    function buildNotificationCardHtml(proof, compact = false) {
+      const badgeStyle = {
+        pending: 'bg-amber-100 text-amber-900 border-amber-300',
+        approved: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+        declined: 'bg-rose-100 text-rose-900 border-rose-300'
+      };
+
+      const title =
+        proof.type === 'listing_0_90'
+          ? `Profile Submission ($0.90) — ${proof.payload?.company || proof.senderName}`
+          : `Profile View Unlock ($2.99) — ${proof.payload?.targetCompany || 'Profile'}`;
+
+      const clientNoticeHtml =
+        proof.status === 'approved'
+          ? `<div class="rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs text-emerald-950 flex flex-wrap items-center justify-between gap-2">
+               <span><strong>Client Notification:</strong> ${escapeHtml(proof.decisionMessage || 'Approved by Admin. Ready to view.')}</span>
+               <button type="button" onclick="openApprovedProofTarget('${proof.id}')" class="px-3 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px]">
+                 View Approved Profile
+               </button>
+             </div>`
+          : proof.status === 'declined'
+            ? `<div class="rounded-lg bg-rose-50 border border-rose-200 px-3 py-2 text-xs text-rose-950">
+                 <strong>Client Notification:</strong> ${escapeHtml(proof.decisionMessage || 'Declined by Admin.')}
+               </div>`
+            : '';
+
+      return `
+        <div class="${compact ? 'rounded-xl border border-slate-200 p-3.5 space-y-2.5' : 'bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3'}">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+            <div>
+              <div class="text-sm font-extrabold text-brand-950">${escapeHtml(title)}</div>
+              <div class="text-xs text-slate-500">
+                Sender: <strong>${escapeHtml(proof.senderName)}</strong> • Account: <strong>${escapeHtml(proof.method)}</strong> • ${escapeHtml(proof.createdAt)}
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-slate-100 text-slate-900">$${Number(proof.amount).toFixed(2)}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${badgeStyle[proof.status] || badgeStyle.pending}">${proof.status.toUpperCase()}</span>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-700">
+            <div class="space-y-1">
+              <div><strong>Transaction ID (TID):</strong> <span class="px-2.5 py-0.5 rounded-md bg-slate-100 font-mono font-bold text-brand-950">${escapeHtml(proof.txRef)}</span></div>
+              ${
+                proof.type === 'listing_0_90' && proof.payload
+                  ? `<div><strong>Profile Details:</strong> ${escapeHtml(proof.payload.tradeScope)} • ${escapeHtml(proof.payload.country)} • ${escapeHtml(proof.payload.category)} (${escapeHtml(proof.payload.role)})</div>`
+                  : `<div><strong>Unlock Target:</strong> ${escapeHtml(proof.payload?.targetCompany || 'Profile')}</div>`
+              }
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onclick="approveProofItem('${proof.id}')"
+                ${proof.status !== 'pending' || !appState.isAdminAuthenticated ? 'disabled' : ''}
+                class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-bold text-xs transition"
+              >
+                Approve
+              </button>
+              <button
+                type="button"
+                onclick="declineProofItem('${proof.id}')"
+                ${proof.status !== 'pending' || !appState.isAdminAuthenticated ? 'disabled' : ''}
+                class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 disabled:opacity-40 text-white font-bold text-xs transition"
+              >
+                Decline
+              </button>
+            </div>
+          </div>
+          ${clientNoticeHtml}
+        </div>
+      `;
+    }
+
+    function renderNotificationsScreen() {
+      const list = document.getElementById('notificationsList');
+      const pendingCount = appState.paymentProofs.filter((p) => p.status === 'pending').length;
+
+      document.getElementById('pendingBadgeCount').textContent = String(pendingCount);
+      document.getElementById('mobilePendingBadge').textContent = String(pendingCount);
+
+      if (appState.paymentProofs.length === 0) {
+        list.innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-xs text-slate-500">No TID notifications yet.</div>`;
+        return;
+      }
+
+      const authBanner = !appState.isAdminAuthenticated
+        ? `<div class="rounded-2xl bg-amber-50 border border-amber-200 p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+             <span class="font-semibold text-amber-950">Clients can see approved/declined statuses here anytime. Sign in to Admin Mode to approve or decline pending TIDs.</span>
+             <button type="button" onclick="navigateTo('admin')" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-brand-950 font-bold">Open Admin Mode</button>
+           </div>`
+        : '';
+
+      list.innerHTML = authBanner + appState.paymentProofs.map((p) => buildNotificationCardHtml(p, false)).join('');
+    }
+
+    function renderInviteScreen() {
+      document.getElementById('inviteCodeInput').value = appState.invite.code;
+      const base = `${window.location.origin}${window.location.pathname}`;
+      document.getElementById('inviteLinkOutput').value = `${base}?invite=${encodeURIComponent(appState.invite.code)}`;
+      document.getElementById('inviteShareCount').textContent = String(appState.invite.sharesCount);
+    }
+
+    function renderAdminScreen() {
+      const loginBox = document.getElementById('adminLoginBox');
+      const dashBox = document.getElementById('adminDashboardBox');
+      const lockBtn = document.getElementById('adminLockBtn');
+      const badge = document.getElementById('headerModeBadge');
+      const modeBtn = document.getElementById('toggleModeBtn');
+
+      if (appState.isAdminAuthenticated) {
+        loginBox.classList.add('hidden');
+        dashBox.classList.remove('hidden');
+        lockBtn.classList.remove('hidden');
+        badge.textContent = 'Admin Mode (Free Access)';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-brand-950';
+        modeBtn.textContent = 'Client Mode';
+      } else {
+        loginBox.classList.remove('hidden');
+        dashBox.classList.add('hidden');
+        lockBtn.classList.add('hidden');
+        badge.textContent = 'Client Mode';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-teal-500/20 text-teal-300 border border-teal-400/30';
+        modeBtn.textContent = 'Admin Mode';
+      }
+
+      document.getElementById('adminTotalListings').textContent = String(appState.listings.length);
+      document.getElementById('adminPendingProofsCount').textContent = String(
+        appState.paymentProofs.filter((p) => p.status === 'pending').length
+      );
+      document.getElementById('adminApprovedProofsCount').textContent = String(
+        appState.paymentProofs.filter((p) => p.status === 'approved').length
+      );
+
+      const inlineNotifs = document.getElementById('adminInlineNotificationsList');
+      if (appState.paymentProofs.length === 0) {
+        inlineNotifs.innerHTML = `<div class="text-xs text-slate-500">No submitted TID requests yet.</div>`;
+      } else {
+        inlineNotifs.innerHTML = appState.paymentProofs.slice(0, 8).map((p) => buildNotificationCardHtml(p, true)).join('');
+      }
+
+      const logEl = document.getElementById('adminActivityLogList');
+      logEl.innerHTML = appState.activityLog
+        .map(
+          (entry) => `
+            <div class="py-2 flex items-start justify-between gap-2">
+              <span class="text-slate-700">${escapeHtml(entry.text)}</span>
+              <span class="font-mono text-[11px] text-slate-400 shrink-0">${escapeHtml(entry.time)}</span>
+            </div>
+          `
+        )
+        .join('');
+
+      const adminList = document.getElementById('adminListingsContainer');
+      adminList.innerHTML = '';
+      appState.listings.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'rounded-xl border border-slate-200 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs';
+        row.innerHTML = `
+          <div>
+            <div class="font-extrabold text-brand-950">${escapeHtml(item.company)} <span class="text-teal-700 font-semibold">(${escapeHtml(item.tradeScope)} • ${escapeHtml(item.country)} • ${escapeHtml(item.category)})</span></div>
+            <div class="text-slate-600">Contact: <strong>${escapeHtml(item.contactName)}</strong> • Phone: <strong>${escapeHtml(item.phone)}</strong> • Email: <strong>${escapeHtml(item.email)}</strong></div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" onclick="openProfileModal('${item.id}')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 font-bold text-slate-900">View Free</button>
+            <button type="button" onclick="removeProfileAdmin('${item.id}')" class="px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 font-bold text-rose-700">Delete</button>
+          </div>
+        `;
+        adminList.appendChild(row);
+      });
+    }
+
+    function removeProfileAdmin(id) {
+      appState.listings = appState.listings.filter((l) => l.id !== id);
+      logActivity(`Removed profile ID ${id}.`);
+      saveState();
+      showToast('Profile removed.', 'info');
+      renderAll();
+    }
+
+    function navigateTo(viewName, options = {}) {
+      if (appState.currentView !== viewName) {
+        appState.previousView = appState.currentView;
+      }
+      appState.currentView = viewName;
+
+      document.querySelectorAll('.app-view').forEach((sec) => {
+        sec.classList.toggle('hidden', sec.id !== `view-${viewName}`);
+      });
+
+      const backStrip = document.getElementById('globalSubViewBackBar');
+      if (viewName === 'directory') {
+        backStrip.classList.add('hidden');
+        backStrip.classList.remove('flex');
+      } else {
+        backStrip.classList.remove('hidden');
+        backStrip.classList.add('flex');
+        document.getElementById('subViewBreadcrumb').textContent = `Textile Trade Bridge / ${viewName}`;
+      }
+
+      document.getElementById('mobileNavDrawer').classList.add('hidden');
+      renderAll();
+
+      if (options.scrollTargetId) {
+        scrollDirectlyToElement(options.scrollTargetId, Boolean(options.focusElement));
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function goBackView() {
+      const target =
+        appState.previousView && appState.previousView !== appState.currentView
+          ? appState.previousView
+          : 'directory';
+      appState.currentView = target;
+      appState.previousView = 'directory';
+
+      document.querySelectorAll('.app-view').forEach((sec) => {
+        sec.classList.toggle('hidden', sec.id !== `view-${target}`);
+      });
+
+      const backStrip = document.getElementById('globalSubViewBackBar');
+      if (target === 'directory') {
+        backStrip.classList.add('hidden');
+        backStrip.classList.remove('flex');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderAll();
+    }
+
+    function renderAll() {
+      renderClientApprovalBanner();
+      renderCategoryChips();
+      renderDirectory();
+      renderReceivingAccountViews();
+      renderPaymentProofScreen();
+      renderNotificationsScreen();
+      renderInviteScreen();
+      renderAdminScreen();
+    }
+
+    function bindAllEvents() {
+      // Navigation
+      document.querySelectorAll('[data-nav]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const dest = btn.dataset.nav;
+          if (dest === 'payments') {
+            navigateTo('payments', { scrollTargetId: 'publicReceivingAccountBox' });
+          } else {
+            navigateTo(dest);
+          }
+        });
+      });
+
+      document.getElementById('brandHomeBtn').addEventListener('click', () => navigateTo('directory'));
+      document.getElementById('heroSubmitBtn').addEventListener('click', () => navigateTo('submit'));
+      document.getElementById('heroPaymentsBtn').addEventListener('click', () =>
+        navigateTo('payments', { scrollTargetId: 'publicReceivingAccountBox' })
+      );
+      document.getElementById('heroInviteBtn').addEventListener('click', () => navigateTo('invite'));
+      document.getElementById('clientApprovalViewNotifsBtn').addEventListener('click', () => navigateTo('notifications'));
+
+      // Back buttons
+      document.getElementById('globalBackBtn').addEventListener('click', goBackView);
+      document.querySelectorAll('.back-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const dest = btn.dataset.back;
+          if (dest) navigateTo(dest);
+          else goBackView();
+        });
+      });
+
+      document.getElementById('paymentBackBtn').addEventListener('click', () => {
+        navigateTo(appState.pendingPaymentContext?.type === 'listing_0_90' ? 'submit' : 'directory');
+      });
+
+      document.getElementById('closeProfileModalBackBtn').addEventListener('click', closeProfileModal);
+      document.getElementById('profileDetailModal').addEventListener('click', (e) => {
+        if (e.target.id === 'profileDetailModal') closeProfileModal();
+      });
+
+      // Mobile drawer
+      document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+        document.getElementById('mobileNavDrawer').classList.toggle('hidden');
+      });
+
+      // Filters
+      document.querySelectorAll('.scope-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          appState.filters.scope = btn.dataset.scope;
+          renderDirectory();
+        });
+      });
+
+      document.getElementById('filterCountrySelect').addEventListener('change', (e) => {
+        appState.filters.country = e.target.value;
+        renderDirectory();
+      });
+
+      document.getElementById('searchDirectoryInput').addEventListener('input', (e) => {
+        appState.filters.search = e.target.value;
+        renderDirectory();
+      });
+
+      const resetFilters = () => {
+        appState.filters = { scope: 'All', category: 'All', country: 'All', search: '' };
+        renderCategoryChips();
+        renderDirectory();
+      };
+      document.getElementById('resetFiltersBtn').addEventListener('click', resetFilters);
+      document.getElementById('emptyResetBtn').addEventListener('click', resetFilters);
+
+      // Submit $0.90 profile form -> jumps directly to paymentActionSection
+      document.getElementById('submitProfileForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const payload = {
+          company: String(fd.get('company') || '').trim(),
+          contactName: String(fd.get('contactName') || '').trim(),
+          tradeScope: String(fd.get('tradeScope') || '').trim(),
+          country: String(fd.get('country') || '').trim(),
+          category: String(fd.get('category') || '').trim(),
+          role: String(fd.get('role') || '').trim(),
+          location: String(fd.get('location') || '').trim(),
+          moq: String(fd.get('moq') || '').trim(),
+          phone: String(fd.get('phone') || '').trim(),
+          email: String(fd.get('email') || '').trim(),
+          products: String(fd.get('products') || '').trim(),
+          description: String(fd.get('description') || '').trim()
+        };
+
+        if (!payload.tradeScope || !payload.country || !payload.category) {
+          showToast('Please select Trade Type, Country, and Category.', 'error');
+          return;
+        }
+
+        appState.pendingPaymentContext = {
+          type: 'listing_0_90',
+          amount: 0.9,
+          title: `Profile Submission ($0.90) — ${payload.company}`,
+          description: `Transfer $0.90 to the active receiving account and submit your Transaction ID (TID) to submit ${payload.company} (${payload.tradeScope} • ${payload.country}).`,
+          payload
+        };
+
+        navigateTo('payment-proof', { scrollTargetId: 'paymentActionSection', focusElement: true });
+      });
+
+      // TID submission (no screenshot upload)
+      document.getElementById('proofSubmissionForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const senderName = document.getElementById('proofSenderName').value.trim();
+        const txRef = document.getElementById('proofTxRef').value.trim();
+        if (!txRef) {
+          showToast('Please enter your Transaction ID (TID).', 'warn');
+          return;
+        }
+        const ctx = appState.pendingPaymentContext || { type: 'listing_0_90', amount: 0.9, payload: null };
+
+        appState.paymentProofs.unshift({
+          id: `prf-${Date.now()}`,
+          type: ctx.type,
+          amount: ctx.amount,
+          method: appState.activeReceivingMethod,
+          senderName,
+          txRef,
+          status: 'pending',
+          createdAt: 'Just now',
+          clientSeen: true,
+          decisionMessage: '',
+          createdProfileId: null,
+          payload: ctx.payload
+        });
+
+        logActivity(`Submitted $${Number(ctx.amount).toFixed(2)} TID (${txRef}) via ${appState.activeReceivingMethod} by "${senderName}".`);
+        saveState();
+        e.target.reset();
+        showToast('TID submitted for verification. You can check approval status anytime.', 'success');
+        navigateTo('notifications');
+      });
+
+      // Admin-only active account selection & receiving accounts setup
+      document.getElementById('adminActiveAccountSelect').addEventListener('change', (e) => {
+        if (!appState.isAdminAuthenticated) return;
+        const chosen = e.target.value === 'Bank Account' ? 'Bank Account' : 'Binance';
+        appState.activeReceivingMethod = chosen;
+        logActivity(`Set active receiving account to ${chosen}.`);
+        saveState();
+        renderReceivingAccountViews();
+        showToast(`Active receiving account set to ${chosen}.`, 'success');
+      });
+
+      document.getElementById('binanceConfigForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!appState.isAdminAuthenticated) return;
+        appState.receivingAccounts.binance = {
+          payId: document.getElementById('cfgBinancePayId').value.trim(),
+          network: document.getElementById('cfgBinanceNetwork').value.trim(),
+          walletAddress: document.getElementById('cfgBinanceWallet').value.trim(),
+          instructions: document.getElementById('cfgBinanceNote').value.trim()
+        };
+        logActivity('Updated Binance receiving account details.');
+        saveState();
+        renderReceivingAccountViews();
+        showToast('Binance receiving account saved.', 'success');
+      });
+
+      document.getElementById('bankConfigForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!appState.isAdminAuthenticated) return;
+        appState.receivingAccounts.bank = {
+          accountTitle: document.getElementById('cfgBankTitle').value.trim(),
+          bankName: document.getElementById('cfgBankName').value.trim(),
+          accountNumber: document.getElementById('cfgBankAccountNum').value.trim(),
+          iban: document.getElementById('cfgBankIban').value.trim(),
+          instructions: document.getElementById('cfgBankInstructions').value.trim()
+        };
+        logActivity('Updated Bank receiving account details.');
+        saveState();
+        renderReceivingAccountViews();
+        showToast('Bank receiving account saved.', 'success');
+      });
+
+      // Invitation system
+      document.getElementById('inviteCodeInput').addEventListener('input', (e) => {
+        const clean = e.target.value.trim().toUpperCase().replace(/[^A-Z0-9-]/g, '');
+        appState.invite.code = clean || 'TTB-INVITE';
+        saveState();
+        renderInviteScreen();
+      });
+
+      document.getElementById('copyInviteBtn').addEventListener('click', () => {
+        const el = document.getElementById('inviteLinkOutput');
+        el.select();
+        el.setSelectionRange(0, 99999);
+        try {
+          document.execCommand('copy');
+          showToast('Invite link copied.', 'success');
+        } catch (err) {
+          showToast('Copy the link from the box.', 'info');
+        }
+      });
+
+      document.getElementById('logInviteShareBtn').addEventListener('click', () => {
+        appState.invite.sharesCount += 1;
+        logActivity(`Logged partner invitation share (${appState.invite.code}).`);
+        saveState();
+        renderInviteScreen();
+        showToast('Invite share recorded.', 'success');
+      });
+
+      // Admin authentication & password change
+      document.getElementById('toggleModeBtn').addEventListener('click', () => {
+        if (appState.isAdminAuthenticated) {
+          appState.isAdminAuthenticated = false;
+          saveState();
+          showToast('Switched to Client Mode.', 'info');
+          renderAll();
+        } else {
+          navigateTo('admin');
+        }
+      });
+
+      document.getElementById('adminLockBtn').addEventListener('click', () => {
+        appState.isAdminAuthenticated = false;
+        saveState();
+        showToast('Admin Mode locked.', 'info');
+        renderAll();
+      });
+
+      document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pass = document.getElementById('adminPasswordInput').value;
+        const err = document.getElementById('adminLoginError');
+        if (pass === appState.adminPassword) {
+          appState.isAdminAuthenticated = true;
+          err.classList.add('hidden');
+          document.getElementById('adminPasswordInput').value = '';
+          logActivity('Admin signed in.');
+          saveState();
+          showToast('Admin Mode unlocked.', 'success');
+          renderAll();
+        } else {
+          err.classList.remove('hidden');
+        }
+      });
+
+      document.getElementById('changeAdminPasswordForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!appState.isAdminAuthenticated) return;
+        const cur = document.getElementById('currentAdminPasswordInput').value;
+        const next = document.getElementById('newAdminPasswordInput').value.trim();
+        const conf = document.getElementById('confirmAdminPasswordInput').value.trim();
+
+        if (cur !== appState.adminPassword) {
+          showToast('Current password is wrong.', 'error');
+          return;
+        }
+        if (next.length < 4) {
+          showToast('New password must be at least 4 characters.', 'error');
+          return;
+        }
+        if (next !== conf) {
+          showToast('New password and confirmation do not match.', 'error');
+          return;
+        }
+
+        appState.adminPassword = next;
+        document.getElementById('currentAdminPasswordInput').value = '';
+        document.getElementById('newAdminPasswordInput').value = '';
+        document.getElementById('confirmAdminPasswordInput').value = '';
+        logActivity('Admin password updated.');
+        saveState();
+        showToast('Admin password updated.', 'success');
+      });
+
+      document.getElementById('resetDemoDataBtn').addEventListener('click', () => {
+        if (!appState.isAdminAuthenticated) return;
+        appState.listings = generateSeedProfiles();
+        logActivity('Restored 48 default textile profiles.');
+        saveState();
+        showToast('48 profiles restored.', 'success');
+        renderAll();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        populateCountrySelects();
+        bindAllEvents();
+        renderAll();
+      } catch (err) {
+        showToast('Error initializing application.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>
